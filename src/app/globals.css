@@ -1,26 +1,228 @@
 @import "tailwindcss";
+@source "../../src";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-platinum: var(--platinum);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --shadow-luxe: 0 30px 80px -20px color-mix(in oklab, var(--gold) 18%, transparent);
+  --shadow-glass: 0 1px 0 0 color-mix(in oklab, white 6%, transparent) inset, 0 30px 60px -30px rgb(0 0 0 / 0.6);
+
+  --gradient-gold: linear-gradient(135deg, oklch(0.82 0.13 85), oklch(0.68 0.14 80));
+  --gradient-fade: linear-gradient(180deg, transparent, oklch(0.04 0 0));
+  --gradient-radial-gold: radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--gold) 22%, transparent), transparent 60%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.5rem;
+
+  /* Matte black foundation */
+  --background: oklch(0.06 0 0);
+  --foreground: oklch(0.97 0.005 80);
+  --surface: oklch(0.09 0 0);
+  --surface-elevated: oklch(0.12 0 0);
+
+  --card: oklch(0.09 0 0);
+  --card-foreground: oklch(0.97 0.005 80);
+  --popover: oklch(0.09 0 0);
+  --popover-foreground: oklch(0.97 0.005 80);
+
+  /* Soft white as primary */
+  --primary: oklch(0.97 0.005 80);
+  --primary-foreground: oklch(0.06 0 0);
+
+  --secondary: oklch(0.14 0 0);
+  --secondary-foreground: oklch(0.97 0.005 80);
+
+  --muted: oklch(0.14 0 0);
+  --muted-foreground: oklch(0.65 0.01 80);
+
+  --accent: oklch(0.16 0 0);
+  --accent-foreground: oklch(0.97 0.005 80);
+
+  /* Luxury accents */
+  --gold: oklch(0.78 0.13 85);
+  --gold-soft: oklch(0.68 0.09 85);
+  --platinum: oklch(0.85 0.005 80);
+
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.97 0.005 80);
+
+  --border: oklch(1 0 0 / 8%);
+  --border-strong: oklch(1 0 0 / 16%);
+  --input: oklch(1 0 0 / 10%);
+  --ring: oklch(0.78 0.13 85);
+}
+
+.dark {
+  --background: oklch(0.06 0 0);
+  --foreground: oklch(0.97 0.005 80);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+    background-color: var(--color-background);
+  }
+  body {
+    background-color: transparent;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--gold) 30%, transparent);
+    color: var(--foreground);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility font-display {
+  font-family: var(--font-display);
+  font-feature-settings: "liga", "dlig";
+  letter-spacing: -0.02em;
+}
+
+@utility text-gold {
+  color: var(--gold);
+}
+
+@utility bg-gradient-gold {
+  background-image: var(--gradient-gold);
+}
+
+@utility text-gradient-gold {
+  background-image: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility glass {
+  background: color-mix(in oklab, white 3%, transparent);
+  backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid color-mix(in oklab, white 8%, transparent);
+}
+
+@utility glass-strong {
+  background: color-mix(in oklab, white 5%, transparent);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid color-mix(in oklab, white 12%, transparent);
+}
+
+@utility hairline {
+  border-top: 1px solid color-mix(in oklab, var(--gold) 30%, transparent);
+}
+
+@utility shadow-luxe {
+  box-shadow: var(--shadow-luxe);
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.3; }
+  50% { transform: translateY(-30px) translateX(10px); opacity: 0.8; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes ray-drift {
+  0%, 100% { transform: translateX(-20%) rotate(8deg); opacity: 0.4; }
+  50% { transform: translateX(20%) rotate(8deg); opacity: 0.7; }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scroll-hint {
+  0% { transform: translateY(0); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+@utility animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+@utility animate-ray-drift {
+  animation: ray-drift 14s ease-in-out infinite;
+}
+@utility animate-scroll-hint {
+  animation: scroll-hint 2.2s ease-in-out infinite;
+}
+@utility animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Global live background keyframes */
+@keyframes fogA {
+  0%, 100% { transform: translate3d(0,0,0) scale(1); }
+  50% { transform: translate3d(2%, -1%, 0) scale(1.05); }
+}
+@keyframes fogB {
+  0%, 100% { transform: translate3d(0,0,0) scale(1.02); }
+  50% { transform: translate3d(-3%, 2%, 0) scale(1.08); }
+}
+@keyframes orbDrift1 {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(6%, 4%, 0); }
+}
+@keyframes orbDrift2 {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(-5%, -3%, 0); }
+}
+@keyframes rayA {
+  0%, 100% { transform: rotate(14deg) translateX(-6%); opacity: 0.35; }
+  50% { transform: rotate(14deg) translateX(6%); opacity: 0.7; }
+}
+@keyframes rayB {
+  0%, 100% { transform: rotate(-10deg) translateX(4%); opacity: 0.25; }
+  50% { transform: rotate(-10deg) translateX(-4%); opacity: 0.55; }
+}
+@keyframes sweep {
+  0% { transform: translateX(-30%) skewX(-12deg); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateX(260%) skewX(-12deg); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-["] { animation: none !important; }
 }
