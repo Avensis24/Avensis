@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { Reveal, SectionLabel, MagneticButton } from "@/components/ui-shared";
+import { Reveal, SectionLabel, MagneticButton, ContactModal } from "@/components/ui-shared";
 
 /* ─────────────────────────────────────────────
    Blockchain Node Canvas — luxury floating ecosystem
@@ -35,16 +35,17 @@ function BlockchainCanvas() {
     const ctx = canvas.getContext("2d")!;
 
     const resize = () => {
-      canvas.width = canvas.offsetWidth * window.devicePixelRatio;
-      canvas.height = canvas.offsetHeight * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
+      ctx.scale(dpr, dpr);
       init();
     };
 
     const init = () => {
       const W = canvas.offsetWidth;
       const H = canvas.offsetHeight;
-      const count = Math.min(28, Math.floor((W * H) / 18000));
+      const count = Math.min(18, Math.floor((W * H) / 25000));
       nodesRef.current = Array.from({ length: count }, () => ({
         x: Math.random() * W,
         y: Math.random() * H,
@@ -516,6 +517,7 @@ function StatsRow() {
 function Web3CTA() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div ref={ref} className="relative mt-24 lg:mt-40 overflow-hidden">
@@ -581,14 +583,16 @@ function Web3CTA() {
           transition={{ duration: 0.9, delay: 0.55 }}
           className="mt-12 flex flex-wrap items-center justify-center gap-4"
         >
-          <MagneticButton href="https://wa.me/919693529897" target="_blank" variant="primary">
+          <MagneticButton href="#" onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} variant="primary">
             Launch Your Web3 Project
           </MagneticButton>
-          <MagneticButton href="https://wa.me/919693529897" target="_blank" variant="ghost">
+          <MagneticButton href="#" onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} variant="ghost">
             Book a Consultation
           </MagneticButton>
         </motion.div>
       </div>
+
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} productTitle="Web3 Services" />
 
       {/* Bottom hairline */}
       <div className="w-full h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(200,165,90,0.15), transparent)" }} />

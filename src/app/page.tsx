@@ -1,5 +1,7 @@
 "use client";
-import { useRef } from "react";
+import Image from "next/image";
+import { StaticImageData } from "next/image";
+import { useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   GraduationCap,
@@ -12,9 +14,10 @@ import {
   Layers,
   Cpu,
   Infinity as InfinityIcon,
+  X,
 } from "lucide-react";
 
-import { Reveal, MagneticButton, SectionLabel } from "@/components/ui-shared";
+import { Reveal, MagneticButton, SectionLabel, ContactModal } from "@/components/ui-shared";
 import Web3Section from "@/components/Web3Section";
 
 import heroBg from "@/assets/hero-bg.jpg";
@@ -42,7 +45,7 @@ function Hero() {
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           className="h-full w-full object-cover opacity-90"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/20 to-background" />
@@ -168,7 +171,7 @@ type Product = {
   title: string;
   headline: React.ReactNode;
   description: string;
-  image: any;
+  image: StaticImageData;
   features: string[];
   icon: React.ReactNode;
   reverse?: boolean;
@@ -177,21 +180,21 @@ type Product = {
 const PRODUCTS: Product[] = [
   {
     index: "01",
-    title: "School Management Software",
-    headline: <>Transforming education<br />through technology.</>,
-    description: "Modern school administration platform connecting administrators, faculty, students, and parents in one intelligent ecosystem.",
-    image: productSchool,
-    features: ["Unified admissions", "Live academic analytics", "Parent + student portals", "Faculty workflows"],
-    icon: <GraduationCap className="h-5 w-5" />,
-  },
-  {
-    index: "02",
     title: "Avensis Smart NFC Identity",
     headline: <>More than a card.<br />A connection that matters.</>,
     description: "Smart NFC solutions for professionals, personal networking, pets, elderly care, and digital identity — a single tap, a lasting impression.",
     image: productNfc,
     features: ["Professional & personal", "Pet & elderly care", "Tap-to-share profiles", "Lifetime identity"],
     icon: <CreditCard className="h-5 w-5" />,
+  },
+  {
+    index: "02",
+    title: "School Management Software",
+    headline: <>Transforming education<br />through technology.</>,
+    description: "Modern school administration platform connecting administrators, faculty, students, and parents in one intelligent ecosystem.",
+    image: productSchool,
+    features: ["Unified admissions", "Live academic analytics", "Parent + student portals", "Faculty workflows"],
+    icon: <GraduationCap className="h-5 w-5" />,
     reverse: true,
   },
   {
@@ -215,11 +218,15 @@ const PRODUCTS: Product[] = [
   },
 ];
 
+
+
 function ProductBlock({ p }: { p: Product }) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [80, -80]);
   const scale = useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1, 1.05]);
+  const MotionImage = motion(Image);
 
   return (
     <div ref={ref} className="relative py-20 lg:py-40">
@@ -252,23 +259,31 @@ function ProductBlock({ p }: { p: Product }) {
           </Reveal>
           <Reveal delay={0.4}>
             <div className="mt-12">
-              <MagneticButton variant="ghost" href="#contact">Discover more</MagneticButton>
+              <MagneticButton
+                variant="ghost"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setIsModalOpen(true);
+                }}
+              >
+                Discover more
+              </MagneticButton>
             </div>
           </Reveal>
+          <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} productTitle={p.title} />
         </div>
 
         <div className={"lg:col-span-7 " + (p.reverse ? "lg:order-1" : "")}>
           <motion.div style={{ y }} className="relative">
             <div className="absolute -inset-10 -z-10 opacity-60" style={{ background: "var(--gradient-radial-gold)" }} />
-            <div className="glass-strong relative overflow-hidden rounded-2xl">
-              <motion.img
+            <div className="glass-strong relative overflow-hidden rounded-2xl bg-surface">
+              <MotionImage
                 style={{ scale }}
-                src={p.image.src}
+                src={p.image}
                 alt={p.title}
-                width={1600}
-                height={1120}
-                loading="lazy"
+                sizes="(max-width: 1024px) 100vw, 60vw"
                 className="h-auto w-full object-cover"
+                placeholder="blur"
               />
               <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-gold/15 rounded-2xl" />
             </div>
@@ -361,9 +376,9 @@ function Vision() {
   const y = useTransform(scrollYProgress, [0, 1], [-120, 120]);
 
   return (
-    <section id="vision" ref={ref} className="relative h-[110vh] overflow-hidden">
+    <section id="vision" ref={ref} className="relative h-[110vh] overflow-hidden bg-background">
       <motion.div style={{ y }} className="absolute inset-0 -top-20 -bottom-20">
-        <img src={visionBg.src} alt="" width={1920} height={1080} loading="lazy" className="h-full w-full object-cover" />
+        <Image src={visionBg} alt="Vision Background" fill sizes="100vw" placeholder="blur" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/30 to-background" />
         <div className="absolute inset-0 bg-background/40" />
       </motion.div>
@@ -387,8 +402,9 @@ function Vision() {
   );
 }
 
-/* ---------------- CTA ---------------- */
 function CTA() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <section id="contact" className="relative overflow-hidden border-t border-border py-24 lg:py-56">
       <div className="absolute inset-0 -z-10">
@@ -423,10 +439,11 @@ function CTA() {
         </Reveal>
         <Reveal delay={0.4}>
           <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
-            <MagneticButton href="https://wa.me/919693529897" target="_blank" variant="primary">Contact Us</MagneticButton>
-            <MagneticButton href="https://wa.me/919693529897" target="_blank" variant="ghost">Book a Consultation</MagneticButton>
+            <MagneticButton href="#" onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} variant="primary">Contact Us</MagneticButton>
+            <MagneticButton href="#" onClick={(e) => { e.preventDefault(); setIsModalOpen(true); }} variant="ghost">Book a Consultation</MagneticButton>
           </div>
         </Reveal>
+        <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} productTitle="Consultation" />
       </div>
     </section>
   );
