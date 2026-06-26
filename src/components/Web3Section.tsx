@@ -549,7 +549,7 @@ function Web3CTA() {
           initial={{ opacity: 0, y: 40 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="mx-auto max-w-5xl font-display text-4xl leading-[1.02] text-foreground sm:text-6xl md:text-7xl lg:text-[7rem]"
+          className="mx-auto max-w-5xl font-display text-4xl leading-[1.02] text-foreground sm:text-5xl md:text-6xl lg:text-[7rem]"
         >
           Ready to build the
           <br />
@@ -653,7 +653,7 @@ export default function Web3Section() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <h2 className="mt-10 max-w-4xl font-display text-5xl leading-[1.02] text-foreground sm:text-7xl lg:text-[8.5rem]">
+            <h2 className="mt-10 max-w-4xl font-display text-4xl leading-[1.02] text-foreground sm:text-5xl md:text-6xl lg:text-[8.5rem]">
               Web3 &amp;{" "}
               <span
                 style={{
@@ -719,7 +719,7 @@ export default function Web3Section() {
         <Reveal>
           <div className="mb-16">
             <SectionLabel>Our Services</SectionLabel>
-            <h3 className="mt-8 max-w-3xl font-display text-3xl leading-[1.05] text-foreground sm:text-5xl lg:text-6xl">
+            <h3 className="mt-8 max-w-3xl font-display text-3xl leading-[1.05] text-foreground sm:text-4xl lg:text-5xl xl:text-6xl">
               Six pillars of{" "}
               <span
                 style={{

@@ -35,7 +35,7 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   return (
-    <section id="top" ref={ref} className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section id="top" ref={ref} className="relative flex min-h-screen items-center justify-center overflow-hidden w-full">
       {/* Cinematic background */}
       <motion.div style={{ y, opacity }} className="absolute inset-0">
         <video
@@ -86,7 +86,7 @@ function Hero() {
           initial={{ opacity: 0, y: 40, letterSpacing: "0.4em" }}
           animate={{ opacity: 1, y: 0, letterSpacing: "0.18em" }}
           transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
-          className="mt-8 font-display text-5xl text-foreground sm:text-7xl md:text-[10rem] lg:text-[13rem]"
+          className="mt-8 font-display text-[3.5rem] leading-none text-foreground sm:text-7xl md:text-8xl lg:text-[10rem] xl:text-[13rem]"
         >
           AVENSIS
         </motion.h1>
@@ -140,7 +140,7 @@ function WhoWeAre() {
           <SectionLabel>Who we are</SectionLabel>
         </Reveal>
         <Reveal delay={0.1}>
-          <h2 className="mt-10 font-display text-4xl leading-[1.05] text-foreground sm:text-6xl md:text-7xl lg:text-[8rem]">
+          <h2 className="mt-10 font-display text-4xl leading-[1.05] text-foreground sm:text-5xl md:text-6xl lg:text-7xl xl:text-[8rem]">
             We don't just build <span className="italic text-gold">software.</span>
             <br />
             We build <span className="italic text-gold">experiences.</span>
@@ -230,7 +230,7 @@ function ProductBlock({ p }: { p: Product }) {
   const MotionImage = motion(Image);
 
   return (
-    <div ref={ref} className="relative py-20 lg:py-40">
+    <div ref={ref} className="relative py-20 lg:py-40 overflow-hidden">
       <div className="mx-auto grid max-w-[1400px] items-center gap-16 px-6 lg:grid-cols-12 lg:gap-20 lg:px-12">
         <div className={"lg:col-span-5 " + (p.reverse ? "lg:order-2" : "")}>
           <Reveal>
@@ -241,7 +241,7 @@ function ProductBlock({ p }: { p: Product }) {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h3 className="mt-8 font-display text-4xl leading-[1.05] text-foreground sm:text-6xl lg:text-7xl">
+            <h3 className="mt-8 font-display text-3xl leading-[1.05] text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
               {p.headline}
             </h3>
           </Reveal>
@@ -390,7 +390,7 @@ function Vision() {
   const y = useTransform(scrollYProgress, [0, 1], [-120, 120]);
 
   return (
-    <section id="vision" ref={ref} className="relative h-[110vh] overflow-hidden bg-background">
+    <section id="vision" ref={ref} className="relative h-[110vh] overflow-hidden bg-background w-full">
       <motion.div style={{ y }} className="absolute inset-0 -top-20 -bottom-20">
         <Image src={visionBg} alt="Vision Background" fill sizes="100vw" placeholder="blur" className="object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/30 to-background" />
@@ -402,7 +402,7 @@ function Vision() {
           <SectionLabel>The Vision</SectionLabel>
         </Reveal>
         <Reveal delay={0.15}>
-          <h2 className="mt-10 max-w-5xl font-display text-4xl leading-[1.02] text-foreground sm:text-7xl md:text-8xl lg:text-[8.5rem]">
+          <h2 className="mt-10 max-w-5xl font-display text-4xl leading-[1.02] text-foreground sm:text-5xl md:text-7xl lg:text-8xl xl:text-[8.5rem]">
             The future belongs to those who <span className="italic text-gold">build it.</span>
           </h2>
         </Reveal>
@@ -420,7 +420,7 @@ function CTA() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <section id="contact" className="relative overflow-hidden border-t border-border py-24 lg:py-56">
+    <section id="contact" className="relative overflow-hidden border-t border-border py-24 lg:py-56 w-full">
       <div className="absolute inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-background via-surface to-background" />
         <div className="absolute left-1/2 top-1/2 h-[60vw] w-[60vw] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40" style={{ background: "var(--gradient-radial-gold)" }} />
@@ -442,7 +442,7 @@ function CTA() {
       <div className="mx-auto max-w-[1400px] px-6 text-center lg:px-12">
         <Reveal><SectionLabel>Let's build</SectionLabel></Reveal>
         <Reveal delay={0.1}>
-          <h2 className="mx-auto mt-10 max-w-5xl font-display text-5xl leading-[1.02] text-foreground sm:text-7xl md:text-8xl lg:text-[9rem]">
+          <h2 className="mx-auto mt-10 max-w-5xl font-display text-4xl leading-[1.02] text-foreground sm:text-6xl md:text-7xl lg:text-8xl xl:text-[9rem]">
             Ready to build <span className="italic text-gold">the future?</span>
           </h2>
         </Reveal>
