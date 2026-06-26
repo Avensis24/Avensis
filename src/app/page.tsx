@@ -171,7 +171,8 @@ type Product = {
   title: string;
   headline: React.ReactNode;
   description: string;
-  image: StaticImageData;
+  image?: StaticImageData;
+  video?: string;
   features: string[];
   icon: React.ReactNode;
   reverse?: boolean;
@@ -183,7 +184,7 @@ const PRODUCTS: Product[] = [
     title: "Avensis Smart NFC Identity",
     headline: <>More than a card.<br />A connection that matters.</>,
     description: "Smart NFC solutions for professionals, personal networking, pets, elderly care, and digital identity — a single tap, a lasting impression.",
-    image: productNfc,
+    video: "/avensis-card-rotate.mp4",
     features: ["Professional & personal", "Pet & elderly care", "Tap-to-share profiles", "Lifetime identity"],
     icon: <CreditCard className="h-5 w-5" />,
   },
@@ -277,14 +278,27 @@ function ProductBlock({ p }: { p: Product }) {
           <motion.div style={{ y }} className="relative">
             <div className="absolute -inset-10 -z-10 opacity-60" style={{ background: "var(--gradient-radial-gold)" }} />
             <div className="glass-strong relative overflow-hidden rounded-2xl bg-surface">
-              <MotionImage
-                style={{ scale }}
-                src={p.image}
-                alt={p.title}
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                className="h-auto w-full object-cover"
-                placeholder="blur"
-              />
+              {p.video ? (
+                <motion.video
+                  style={{ scale }}
+                  src={p.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  className="w-full object-contain max-h-[520px]"
+                />
+              ) : p.image ? (
+                <MotionImage
+                  style={{ scale }}
+                  src={p.image}
+                  alt={p.title}
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  className="h-auto w-full object-cover"
+                  placeholder="blur"
+                />
+              ) : null}
               <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-gold/15 rounded-2xl" />
             </div>
             <div className="mt-6 flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-muted-foreground">
